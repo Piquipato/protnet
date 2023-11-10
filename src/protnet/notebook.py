@@ -34,7 +34,8 @@ class Notebook(Workbook):
   # the path in which the workbook is located.
 
   def __init__(self, file_path=None, wb=None):
-    self.file_path = file_path
+    if os.path.isfile(file_path) and file_path.split('.')[-1] == 'xlsx':
+      self.file_path = file_path
     if isinstance(wb, Workbook):
       for key, value in vars(wb).items():
         if key != "file_path":
@@ -54,17 +55,18 @@ class Notebook(Workbook):
     else:
       super().save(os.getcwd())
 
-  # Makes a copy (optionally in another path).
-  def copy(self, new_path=None, ext="cp_"):
+  # Makes a copy of the object (optionally in another path).
+  def copy(self, new_path=None, prf=""):
     directory, filename = os.path.split(self.file_path)
-    if new_path is not None:
+    if new_path != None and os.path.isdir(new_path):
       directory = new_path
-    mycopy = Notebook(file_path=os.path.join(directory, ext + filename),
+    mycopy = Notebook(file_path=os.path.join(directory, prf + filename),
                             wb=self)
-    mycopy.save()
+    if new_path != None and os.path.isdir(new_path):
+      mycopy.save()
     return mycopy
 
-  # Moves workbook to another path.
+  # Moves workbook to another path and keeps track of it.
   def move(self, new_path):
     shutil.move(self.file_path, new_path)
     self.file_path = os.path.join(new_path, os.path.split(self.file_path)[1])
