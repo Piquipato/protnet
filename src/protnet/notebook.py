@@ -24,14 +24,25 @@
 # This software is a creation of PepitoDeCrema.
 # ----------------------------------------------------------------------------
 
+"""
+notebook:
+  Custom implementation of openpyxl's notebook that keeps track of an open
+  .xlsx file's directory in the system.
+"""
+
+# Third-party libraries
 from openpyxl import Workbook
 
+# Built-in libraries
 import os, shutil
 
 class Notebook(Workbook):
   
-  # Just a reimplementation of openpyxl workbook which keeps track of
-  # the path in which the workbook is located.
+  """
+  Notebook:
+    Just a reimplementation of openpyxl workbook which keeps track of
+    the path in which the workbook is located.
+  """
 
   def __init__(self, file_path=None, wb=None):
     if os.path.isfile(file_path) and file_path.split('.')[-1] == 'xlsx':

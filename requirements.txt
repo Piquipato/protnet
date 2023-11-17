@@ -1,0 +1,7 @@
+# Just a list of requirements for now.
+openpyxl
+goatools
+networkx
+pandas
+numpy
+scipy

@@ -24,6 +24,20 @@
 # This software is a creation of PepitoDeCrema.
 # ----------------------------------------------------------------------------
 
+"""
+protnet:
+    Core module to protnet's library. Classes concerning the network building
+    from expression data are contained within this module.
+"""
+
+# Third-party libraries
+from networkx import Graph
+from numpy import array
+
+class ProtNetwork(Graph):
+
+    def __init__(self, expr: array):
+        pass
 
 
 
