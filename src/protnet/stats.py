@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
-# @File	:	genenet.py
-# @Time	:	18:40:56 10/11/2023
+# @File	:	stats.py
+# @Time	:	19:04:32 17/11/2023
 # @Author	:	Pedro Lalanda Delgado
 # @Version	:	1.0.0
 # @Contact	:	piquipato@gmail.com
@@ -24,27 +24,42 @@
 # This software is a creation of PepitoDeCrema.
 # ----------------------------------------------------------------------------
 
-from networkx import Graph
-from pandas import DataFrame
-from numpy import array
+"""
+stats:
+    Statistics module with utilities for the rest of the library.
+"""
 
+# Third-party libraries
+from numpy import array, zeros, ones
 
-class GeneNetwork(Graph):
+# Built-in libraries
+from math import sqrt, log, pow
 
-    # Central implementation of a Gene Network. Built-in methods to calculate
-    # a variety of useful structures to study the network.
-
-    def __init__(self, dataframe):
-        if not isinstance(dataframe, DataFrame):
-            TypeError("The inputed object is not a recognised data type. " \
-                      "You should try using lists, a pandas DataFrame or a " \
-                      "numpy array.")
-
-    def __init__(self, dataset, genes, obs):
-        if not isinstance(dataset, array) or \
-            not isinstance(genes, array) or \
-            not isinstance(obs, array):
-            TypeError("The inputed object is not a recognised data type. " \
-                      "You should try using lists, a pandas DataFrame or a " \
-                      "numpy array.")
-
+def mutual_information(x: array, y: array) -> float:
+    """
+    mutual_information:
+        Calculates the mutual information between two continuous
+        variables, by the gRapHD R library method.
+    """
+    n = len(x)
+    (v1, v2, c12, m1, m2, \
+    idn, idx, idy, nuo) = tuple(zeros((1, 9)))
+    for i in range(n):
+        nuo += 1
+        (v1, v2) += (x[i] ** 2, y[i] ** 2)
+        (m1, m2) += (x[i], y[i])
+        c12 += x[i] * y[i]
+        (idn, idx, idy) += (x[i] == y[i], \
+                            x[0] == y[i], \
+                            y[0] == x[i])
+    v1 = sqrt((v1 - m1 * m1 / nuo) / (nuo))
+    v2 = sqrt((v2 - m2 * m2 / nuo) / (nuo))
+    c12 = (c12 - m1 * m2 / nuo) / (nuo)
+    c12 /= (v1 * v2)
+    (m1, m2) /= nuo * tuple(ones((1, 2)))
+    if not (
+        (idn == nuo) or
+        (idx == nuo) or
+        (idy == nuo)
+    ):
+        return - n * log(1 - pow(c12, 2)) - log(n)
