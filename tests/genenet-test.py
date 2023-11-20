@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
-# @File	:	__init__.py
-# @Time	:	18:40:53 10/11/2023
+# @File	:	genenet-test.py
+# @Time	:	19:24:58 10/11/2023
 # @Author	:	Pedro Lalanda Delgado
 # @Version	:	1.0.0
 # @Contact	:	piquipato@gmail.com
@@ -24,4 +24,16 @@
 # This software is a creation of PepitoDeCrema.
 # ----------------------------------------------------------------------------
 
-__version__ = 1.0
+from protnet.genenet import GeneNetwork
+
+from sys import exit
+
+def initializeGeneNetwork():
+    try:
+        net = GeneNetwork()
+        return 0
+    except TypeError:
+        raise AssertionError("GeneNetwork object not initializing correctly!")
+
+if __name__ == "__main__":
+    exit(initializeGeneNetwork())

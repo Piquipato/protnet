@@ -24,6 +24,27 @@
 # This software is a creation of PepitoDeCrema.
 # ----------------------------------------------------------------------------
 
+from networkx import Graph
+from pandas import DataFrame
+from numpy import array
 
 
+class GeneNetwork(Graph):
+
+    # Central implementation of a Gene Network. Built-in methods to calculate
+    # a variety of useful structures to study the network.
+
+    def __init__(self, dataframe):
+        if not isinstance(dataframe, DataFrame):
+            TypeError("The inputed object is not a recognised data type. " \
+                      "You should try using lists, a pandas DataFrame or a " \
+                      "numpy array.")
+
+    def __init__(self, dataset, genes, obs):
+        if not isinstance(dataset, array) or \
+            not isinstance(genes, array) or \
+            not isinstance(obs, array):
+            TypeError("The inputed object is not a recognised data type. " \
+                      "You should try using lists, a pandas DataFrame or a " \
+                      "numpy array.")
 
