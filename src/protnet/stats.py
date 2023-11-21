@@ -35,9 +35,9 @@ from numpy import array, zeros, ones
 # Built-in libraries
 from math import sqrt, log, pow
 
-def mutual_information(x: array, y: array) -> float:
+def mutual_information_graphd(x: array, y: array) -> float:
     """
-    mutual_information:
+    mutual_information_graphd:
         Calculates the mutual information between two continuous
         variables, by the gRapHD R library method.
     """
@@ -46,17 +46,20 @@ def mutual_information(x: array, y: array) -> float:
     idn, idx, idy, nuo) = tuple(zeros((1, 9)))
     for i in range(n):
         nuo += 1
-        (v1, v2) += (x[i] ** 2, y[i] ** 2)
-        (m1, m2) += (x[i], y[i])
+        v1 += x[i] ** 2
+        v2 += y[i] ** 2
+        m1 += x[i]
+        m2 += y[i]
         c12 += x[i] * y[i]
-        (idn, idx, idy) += (x[i] == y[i], \
-                            x[0] == y[i], \
-                            y[0] == x[i])
+        idn += x[i] == y[i]
+        idx += x[0] == y[i]
+        idy += y[0] == x[i]
     v1 = sqrt((v1 - m1 * m1 / nuo) / (nuo))
     v2 = sqrt((v2 - m2 * m2 / nuo) / (nuo))
     c12 = (c12 - m1 * m2 / nuo) / (nuo)
     c12 /= (v1 * v2)
-    (m1, m2) /= nuo * tuple(ones((1, 2)))
+    m1 /= nuo
+    m2 /= nuo
     if not (
         (idn == nuo) or
         (idx == nuo) or
